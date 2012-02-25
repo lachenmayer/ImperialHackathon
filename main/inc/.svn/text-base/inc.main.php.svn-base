@@ -1,0 +1,7 @@
+<?php
+
+if (!defined("SAFE_ZONE"))
+{
+        echo "Fatal Error : Not called from Safe Zone!";
+        exit();
+}

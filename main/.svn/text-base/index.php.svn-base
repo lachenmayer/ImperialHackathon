@@ -1,0 +1,5 @@
+<?php
+
+define("SAFE_ZONE", true);
+
+require('inc/inc.main.php');

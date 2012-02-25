@@ -1,0 +1,3 @@
+Options +FollowSymLinks
+RewriteEngine On
+RewriteRule data/([^/.]+)/([^/.]+)$ /index.php?type=$1&id=$2 [NC,L]
