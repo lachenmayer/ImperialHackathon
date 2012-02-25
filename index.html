@@ -23,6 +23,7 @@
 
   <!-- CSS: implied media=all -->
   <!-- CSS concatenated and minified via ant build script-->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/style.css">
   <!-- end CSS-->
 
@@ -37,10 +38,40 @@
 <body>
 
   <div id="container">
-    <header>
-
     </header>
-    <div id="main" role="main">
+    <div id="main" role="main" class="container">
+      <div class="row">
+        <div id="graph" class="grid12">
+          this is where the graph goes
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span4">
+          <h2>Daily Breakdown</h2>
+          <ul>
+            <li>Mon: £2.34</li>
+            <li>Tue: £4.32</li>
+            <li>Wed: £2.12</li>
+          </ul>
+        </div>
+        <div class="span4">
+          <h2>Daily Breakdown</h2>
+          <ul>
+            <li>Mon: £2.34</li>
+            <li>Tue: £4.32</li>
+            <li>Wed: £2.12</li>
+          </ul>
+        </div>
+        <div class="span4">
+          <h2>Daily Breakdown</h2>
+          <ul>
+            <li>Mon: £2.34</li>
+            <li>Tue: £4.32</li>
+            <li>Wed: £2.12</li>
+          </ul>
+        </div>
+      </div>
 
     </div>
     <footer>
@@ -57,6 +88,7 @@
 
 
   <!-- scripts concatenated and minified via ant build script-->
+  <script defer src="js/bootstrap.min.js"></script>
   <script defer src="js/plugins.js"></script>
   <script defer src="js/script.js"></script>
   <!-- end scripts-->
