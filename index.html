@@ -38,7 +38,6 @@
 <body>
 
   <div id="container">
-    </header>
     <div id="main" role="main" class="container">
 
       <div class="row">
@@ -49,7 +48,7 @@
 
       <div class="row">
         <div id="graph" class="grid12">
-          graph is here
+          <!-- plot magic happens in here -->
         </div>
       </div>
 
@@ -91,22 +90,20 @@
       </div>
 
     </div>
-    <footer>
-
-    </footer>
   </div> <!--! end of #container -->
 
 
   <!-- JavaScript at the bottom for fast page loading -->
 
   <!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if offline -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.6.2.min.js"><\/script>')</script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
 
 
   <!-- scripts concatenated and minified via ant build script-->
   <script defer src="js/bootstrap.min.js"></script>
   <script defer src="js/plugins.js"></script>
+  <script defer src="js/mylibs/flot/jquery.flot.js"></script>
   <script defer src="js/script.js"></script>
   <!-- end scripts-->
 
