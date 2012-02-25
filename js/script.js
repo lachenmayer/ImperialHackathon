@@ -2,6 +2,23 @@
 
 */
 
+var Foodie = (function() {
+
+  var getPurchasesByCID = function(cid) {
+    $.get("http://129.31.217.212/hthon/main/?type=cid&id=" + cid + "&latest=30",
+    function(response) {
+      console.log(response);
+      return JSON.parse(response);
+    });
+  }
+  
+  return {
+    testPurchases: function() {
+      return getPurchasesByCID(691254);
+    }
+  }
+})();
+
 $(function() {
   
   var dailyBreakdownData = [[0,2.34],
