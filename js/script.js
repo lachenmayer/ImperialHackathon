@@ -133,6 +133,12 @@ var TopShops = (function() {
 $(function () {
   
   Foodie.getUserInfoByCID(593824, function(userInfo) {
+    //DailyBreakdown.getInfo(userInfo);
+    //DailyBreakdown.drawTable();
+
+    //TopFoods.getInfo(userInfo);
+    //TopFoods.drawTable();
+
     TopShops.getInfo(userInfo);
     TopShops.drawTable();
   });
