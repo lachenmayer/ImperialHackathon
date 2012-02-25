@@ -14,7 +14,170 @@ while($row = $result->fetch_assoc()) {
 }
 
 */
-$daysToFetch = (is_numeric(@$_GET['latest'])) ? $_GET['latest'] : 7;
+$daysToFetch = (is_numeric(@$_GET['latest'])) ? $_GET['latest'] : -1;
+$topShops = (is_numeric(@$_GET['topamount'])) ? $_GET['topamount'] : 1;
+
+
+if (@$_GET['type'] == "topshop" && $daysToFetch != -1) //we've given a timeframe, so we don't want global data
+{
+	if ($value == 0) //if we want it over all time
+	{
+		$sql = "SELECT COUNT(*) AS `Rows`, shop
+FROM `data`
+GROUP BY shop
+ORDER BY `Rows` DESC
+LIMIT $topShops";
+	}
+	else //otherwise, we have veen given a time
+	{
+		$sql = "SELECT COUNT(*) AS `Rows`, shop
+FROM `data`
+WHERE date >= '". (time() - ($daysToFetch*24*60*60)) ."'
+GROUP BY shop
+ORDER BY `Rows` DESC
+LIMIT $topShops";
+	}
+	$result = $db->query($sql);
+	
+	while($row = $result->fetch_assoc())
+	{
+		$topshops[] = $row['shop'];
+	}
+	
+	foreach ($topshops as $key=>$value)
+	{
+		$rows[] = $db->query("SELECT * FROM shop WHERE id = '$value'")->fetch_assoc();
+	}
+	echo json_encode($rows);
+}
+elseif (@$_GET['type'] == "topshop") //this means we want global data
+{
+	$daystofetch = array("7", "30", '0');
+	foreach ($daystofetch as $key=>$value)
+	{
+		if ($value == 0)
+		{
+			$sql = "SELECT COUNT(*) AS `Rows`, shop
+FROM `data`
+GROUP BY shop
+ORDER BY `Rows` DESC
+LIMIT $topShops";
+		}
+		else
+		{
+			$sql = "SELECT COUNT(*) AS `Rows`, shop
+FROM `data`
+WHERE date >= '". (time() - ($value*24*60*60)) ."'
+GROUP BY shop
+ORDER BY `Rows` DESC
+LIMIT $topShops";
+		}
+		
+		$result=$db->query($sql);
+		
+		$value = ($value==0) ? 'all' : $value;
+		
+		while($row = $result->fetch_assoc())
+		{
+			$topshops[$value."days"][] = $row['shop'];
+		}
+		
+		foreach ($topshops[$value."days"] as $key=>$value2)
+		{
+			$rows[$value."days"][] = $db->query("SELECT * FROM shop WHERE id = '$value2'")->fetch_assoc();
+		}
+	}
+	
+	echo json_encode($rows);
+}
+
+
+
+
+
+
+
+
+
+if (@$_GET['type'] == "topitem" && $daysToFetch != -1) //we've given a timeframe, so we don't want global data
+{
+	if ($value == 0) //if we want it over all time
+	{
+		$sql = "SELECT COUNT(*) AS `Rows`, itemid
+FROM `data`
+GROUP BY itemid
+ORDER BY `Rows` DESC
+LIMIT $topShops";
+	}
+	else //otherwise, we have veen given a time
+	{
+		$sql = "SELECT COUNT(*) AS `Rows`, itemid
+FROM `data`
+WHERE date >= '". (time() - ($daysToFetch*24*60*60)) ."'
+GROUP BY itemid
+ORDER BY `Rows` DESC
+LIMIT $topShops";
+	}
+	$result = $db->query($sql);
+	
+	while($row = $result->fetch_assoc())
+	{
+		$topshops[] = $row['itemid'];
+	}
+	
+	foreach ($topshops as $key=>$value)
+	{
+		$rows[] = $db->query("SELECT * FROM items WHERE id = '$value'")->fetch_assoc();
+	}
+	echo json_encode($rows);
+}
+elseif (@$_GET['type'] == "topitem") //this means we want global data
+{
+	$daystofetch = array("7", "30", '0');
+	foreach ($daystofetch as $key=>$value)
+	{
+		if ($value == 0)
+		{
+			$sql = "SELECT COUNT(*) AS `Rows`, itemid
+FROM `data`
+GROUP BY itemid
+ORDER BY `Rows` DESC
+LIMIT $topShops";
+		}
+		else
+		{
+			$sql = "SELECT COUNT(*) AS `Rows`, itemid
+FROM `data`
+WHERE date >= '". (time() - ($value*24*60*60)) ."'
+GROUP BY itemid
+ORDER BY `Rows` DESC
+LIMIT $topShops";
+		}
+		
+		$result=$db->query($sql);
+		
+		$value = ($value==0) ? 'all' : $value;
+		
+		while($row = $result->fetch_assoc())
+		{
+			$topshops[$value."days"][] = $row['itemid'];
+		}
+		
+		foreach ($topshops[$value."days"] as $key=>$value2)
+		{
+			$rows[$value."days"][] = $db->query("SELECT * FROM items WHERE id = '$value2'")->fetch_assoc();
+		}
+	}
+	
+	echo json_encode($rows);
+}
+
+
+
+if (@$_GET['type'] == 'mostprofit' && is_numeric($_GET['id']))
+
+
+
 
 if (@$_GET['type'] == 'cid' && is_numeric($_GET['id']))
 {
