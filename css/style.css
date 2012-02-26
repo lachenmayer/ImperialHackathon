@@ -41,6 +41,12 @@
   color: #999;
 }
 
+#hover {
+  height: 10px;
+  width: 10px;
+  position: absolute;
+}
+
 
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.

@@ -102,12 +102,17 @@ var DailyBreakdown = (function() {
               show: false
           },
           grid: {
-              borderWidth: 0
+              borderWidth: 0,
+              clickable: true,
+              hoverable: true
           }
       };
       $.plot($("#graph"), separateDays, options);
-      $("#graph").bind("plotclick", function(event, pos, item) {
-        console.log(event);
+      $("#graph").bind("plothover", function(event, pos, item) {
+        if (item) {
+          $("#hover").offset({top: item.pageY - 3, left: item.pageX - 3});
+        }
+        $("#hover").popover({content: "hello world"});
       });
     }
   }
