@@ -9,7 +9,7 @@
 	
 	**/
 
-	function statsForCid($db, $cid, $days)
+	function statsForCid($db, $cid, $numberOfdays)
 	{
 		$dailybreakdown = array();
 		$topfoods       = array();
@@ -19,7 +19,6 @@
 
 		$dayTimestampValue  = 24 * 60 * 60;
 
-		$numberOfdays = isset($days) && is_numeric($days) ? $days : 7;
 		$lowestTimestamp = $numberOfdays * $dayTimestampValue;
 
 		if(isset($cid) && is_numeric($cid)) {
@@ -33,7 +32,7 @@
 				$updayselect = $nextDayM1Timestamp - ($i - 1) * $dayTimestampValue;
 				$lodayselect = $nextDayM1Timestamp -  $i      * $dayTimestampValue;
 
-				$dailyBreakdownQuery = pg_query($db, 'SELECT COUNT(*) AS count, SUM(items.price) AS total FROM purchases INNER JOIN items ON purchases.itemid = items.itemid WHERE timestamp >= ' . $lodayselect . ' AND timestamp <= ' . $updayselect . ' AND cid = ' . $cid . ';');
+				$dailyBreakdownQuery = pg_query($db, 'SELECT COUNT(*) AS count, SUM(items.price) AS total FROM purchases INNER JOIN items ON purchases.itemid = items.itemid WHERE timestamp >= ' . $lodayselect . ' AND timestamp <= ' . $updayselect . ' AND cid = ' . $cid . ' ORDER BY total DESC ;');
 				$dayBreakdown = pg_fetch_object($dailyBreakdownQuery);
 
 				$dayBreakdown->day = date('l', (($lodayselect + $updayselect) / 2));
@@ -45,7 +44,7 @@
 			}
 
 			// Top foods query
-			$topFoodsQuery = pg_query($db, 'SELECT purchases.itemid, COUNT(purchases.itemid) AS quantity, COUNT(purchases.itemid) * items.price AS total FROM purchases INNER JOIN items ON purchases.itemid = items.itemid WHERE purchases.timestamp >= ' . $lowestTimestamp . ' AND purchases.cid = ' . $cid . ' GROUP BY purchases.itemid, items.price;');
+			$topFoodsQuery = pg_query($db, 'SELECT purchases.itemid, COUNT(purchases.itemid) AS quantity, COUNT(purchases.itemid) * items.price AS total FROM purchases INNER JOIN items ON purchases.itemid = items.itemid WHERE purchases.timestamp >= ' . $lowestTimestamp . ' AND purchases.cid = ' . $cid . ' GROUP BY purchases.itemid, items.price ORDER BY total DESC;');
 			while($topFood = pg_fetch_object($topFoodsQuery)) {
 				$topFood->itemid   = intval($topFood->itemid);
 				$topFood->quantity = intval($topFood->quantity);
@@ -57,7 +56,7 @@
 			}
 
 			// Top shops query
-			$topShopsQuery = pg_query($db, 'SELECT purchases.shopid, COUNT(purchases.shopid) AS count, SUM(items.price) AS total FROM purchases INNER JOIN items ON purchases.itemid = items.itemid WHERE purchases.cid = ' . $cid . ' AND purchases.timestamp >= ' . $lowestTimestamp . ' GROUP BY purchases.shopid;');
+			$topShopsQuery = pg_query($db, 'SELECT purchases.shopid, COUNT(purchases.shopid) AS count, SUM(items.price) AS total FROM purchases INNER JOIN items ON purchases.itemid = items.itemid WHERE purchases.cid = ' . $cid . ' AND purchases.timestamp >= ' . $lowestTimestamp . ' GROUP BY purchases.shopid ORDER BY total DESC;');
 			while($topShop = pg_fetch_object($topShopsQuery)) {
 				$topShop->shopid = intval($topShop->shopid);
 				$topShop->count  = intval($topShop->count);
