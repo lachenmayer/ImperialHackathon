@@ -5,7 +5,7 @@
 		FILENAME: dbase.php
 		AUTHOR:   Peregrine park
 		DATE:     26.02.2012
-		PRPJECT:  Imperial College Hackathon 2012
+		PROJECT:  Imperial College Hackathon 2012
 	
 	**/
 

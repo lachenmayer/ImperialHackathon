@@ -5,7 +5,7 @@
 		FILENAME: cidstats.php
 		AUTHOR:   Peregrine park
 		DATE:     26.02.2012
-		PRPJECT:  Imperial College Hackathon 2012
+		PROJECT:  Imperial College Hackathon 2012
 	
 	**/
 
@@ -57,7 +57,7 @@
 			}
 
 			// Top shops query
-			$topShopsQuery = pg_query($db, 'SELECT purchases.shopid, COUNT(purchases.itemid), COUNT(purchases.itemid) * (SELECT price FROM items WHERE itemid = purchases.itemid) AS total FROM purchases WHERE purchases.timestamp >= ' . $lowestTimestamp . ' AND purchases.cid = ' . $cid . ' GROUP BY purchases.shopid, purchases.itemid;');
+			$topShopsQuery = pg_query($db, 'SELECT purchases.shopid, COUNT(purchases.shopid) AS count, SUM(items.price) AS total FROM purchases INNER JOIN items ON purchases.itemid = items.itemid WHERE purchases.cid = ' . $cid . ' AND purchases.timestamp >= ' . $lowestTimestamp . ' GROUP BY purchases.shopid;');
 			while($topShop = pg_fetch_object($topShopsQuery)) {
 				$topShop->shopid = intval($topShop->shopid);
 				$topShop->count  = intval($topShop->count);
