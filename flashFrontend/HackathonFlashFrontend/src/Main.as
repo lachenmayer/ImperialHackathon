@@ -3,6 +3,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
+	
 	/**
 	 * ...
 	 * @author Vojtech Havlicek
@@ -19,11 +20,11 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
-			
+			var cssGetter:CSSGetter = new CSSGetter();
 			var canvas:Canvas = new Canvas();
 			addChild(canvas);
+			
 		}
-		
 	}
 	
 }
