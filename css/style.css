@@ -47,6 +47,9 @@
   position: absolute;
 }
 
+#pie1, #pie2 {
+  height: 320px;
+}
 
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.

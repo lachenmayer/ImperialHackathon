@@ -100,6 +100,23 @@
   <script defer src="js/script.js"></script>
   <!-- end scripts-->
 
+  <script>
+    $(function () {
+
+      Foodie.renderUserPage(687826);
+  
+      $.get("http://dyn1195-219.wlan.ic.ac.uk/~peregrinepark/ImperialHackathon/dbase.php?type=listcid", function(response) {
+        var cids = JSON.parse(response).cids;
+        var i = 0;
+        setInterval(function() {
+          Foodie.renderUserPage(cids[i]);
+          i++;
+        }, 2000);
+      });
+    
+      
+    }); 
+  </script>
 	
   <!-- Change UA-XXXXX-X to be your site's ID -->
   <script>

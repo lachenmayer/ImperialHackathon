@@ -9,8 +9,46 @@ var Foodie = (function() {
   var userInfo = {};
 
   return {
+
+    renderUserPage: function(cid) {
+      Foodie.getUserInfoByCID(cid, function(userInfo) {
+        log(userInfo);
+
+        var dailyBreakdown = new DailyBreakdown();
+        var topFoods = new TopFoods();
+        var topShops = new TopShops();
+
+        dailyBreakdown.getInfo(userInfo);
+        dailyBreakdown.drawTable();
+        dailyBreakdown.plotGraph();
+
+        topFoods.getInfo(userInfo);
+        topFoods.drawTable();
+
+        topShops.getInfo(userInfo);
+        topShops.drawTable();
+      });
+    },
+
+    renderGlobalPage: function() {
+      $.get("http://dyn1195-219.wlan.ic.ac.uk/~peregrinepark/ImperialHackathon/dbase.php?type=global", function(response) {
+        var data = JSON.parse(response);
+        var topFoods = [];
+        $.each(data.topfoods, function(i, item) {
+          topFoods.push({label: item.name, data: item.sales});
+        });
+        $.plot($("#pie1"), topFoods, {
+          series: {
+            pie: {
+              show: true
+            }
+          }
+        });
+      });
+    },
+
     getUserInfoByCID: function(cid, callback) {
-      $.get("http://dyn1195-219.wlan.ic.ac.uk/~peregrinepark/ImperialHackathon/dbase.php?type=single&cid=" + cid, function(response) {
+      $.get("http://dyn1195-219.wlan.ic.ac.uk/~peregrinepark/ImperialHackathon/dbase.php?type=single&max=7&cid=" + cid, function(response) {
         userInfo[cid] = JSON.parse(response);
         callback(userInfo[cid]);
       });
@@ -21,7 +59,7 @@ var Foodie = (function() {
 
 })();
 
-var DailyBreakdown = (function() {
+var DailyBreakdown = function() {
 
   var userInfo = {};
 
@@ -49,7 +87,7 @@ var DailyBreakdown = (function() {
                        '</td></tr>';
         tableRows = tableRow + tableRows;
       });
-      $("#dailybreakdown").append(tableRows);
+      $("#dailybreakdown").empty().append(tableRows);
       $(".moneyspent").text((weeklyTotal / 100).toFixed(2));
     },
 
@@ -110,16 +148,16 @@ var DailyBreakdown = (function() {
       $.plot($("#graph"), separateDays, options);
       $("#graph").bind("plothover", function(event, pos, item) {
         if (item) {
-          $("#hover").offset({top: item.pageY - 3, left: item.pageX - 3});
+          //$("#hover").offset({top: item.pageY - 3, left: item.pageX - 3});
         }
-        $("#hover").popover({content: "hello world"});
+        //$("#hover").popover({content: "hello world"});
       });
     }
   }
 
-})();
+};
 
-var TopFoods = (function() {
+var TopFoods = function() {
 
   var topItems = {};
   var items = {};
@@ -143,6 +181,7 @@ var TopFoods = (function() {
     },
 
     drawTable: function() {
+      var tableRows = "";
       $.each(topItems, function(i, item) {
         var tableRow = "<tr><td class=item>" +
                        getItemNameById(item.itemid) +
@@ -151,15 +190,16 @@ var TopFoods = (function() {
                        "</td><td class=total>£" +
                        (item.total / 100).toFixed(2) +
                        "</td></tr>";
-        $("#topitems").append(tableRow);
+        tableRows += tableRow;
       });
+      $("#topitems").empty().append(tableRows);
     }
 
   }
 
-})();
+};
 
-var TopShops = (function() {
+var TopShops = function() {
 
   var topShops = {};
   var shops = {};
@@ -183,6 +223,7 @@ var TopShops = (function() {
     },
 
     drawTable: function() {
+      var tableRows = "";
       $.each(topShops, function(i, shop) {
         var tableRow = "<tr><td class=shop>" +
                        getShopNameById(shop.shopid) +
@@ -191,30 +232,13 @@ var TopShops = (function() {
                        "</td><td class=total>£" +
                        (shop.total / 100).toFixed(2) +
                        "</td></tr>";
-        $("#topshops").append(tableRow);
+        tableRows += tableRow;
       });
+      $("#topshops").empty().append(tableRows);
     }
 
   }
 
-})();
-
-$(function () {
-  
-  Foodie.getUserInfoByCID(770807, function(userInfo) {
-    log(userInfo);
-
-    DailyBreakdown.getInfo(userInfo);
-    DailyBreakdown.drawTable();
-    DailyBreakdown.plotGraph();
-
-    TopFoods.getInfo(userInfo);
-    TopFoods.drawTable();
-
-    TopShops.getInfo(userInfo);
-    TopShops.drawTable();
-  });
-  
-});
+};
 
 
