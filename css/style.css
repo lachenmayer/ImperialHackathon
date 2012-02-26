@@ -30,10 +30,17 @@
 .wednesday { color: #FFEC73; }
 .thursday { color: #73C75A; }
 .friday { color: #F24949; }
+.saturday { color: #FF822E; }
+.sunday { color: #9DA600; }
 
 .breakdown {
   font-weight: bold;
 }
+
+.amount {
+  color: #999;
+}
+
 
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.
